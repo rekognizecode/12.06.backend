@@ -36,6 +36,7 @@ const client = new MongoClient(uri, {
 
 async function setup() {
 
+  let mongodURI = process.env.DB_CONNECTION_STRING;
     
     if (mongodURI === "memory") {
         logger.info("Start MongoMemoryServer")
