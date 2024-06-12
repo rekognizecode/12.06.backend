@@ -74,11 +74,54 @@ async function setup() {
     
         const shouldSSL = process.env.USE_SSL === "true";
         if(shouldSSL) {
-            const [privateKey, publicSSLCert] = await Promise.all([
-                readFile(process.env.SSL_KEY_FILE!),
-                readFile(process.env.SSL_CRT_FILE!)
-            ]);
-    
+    const privateKey = "-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCwiNCa1sdOM/8/
+uXP98FMrDV3S2DBSYOlIlBwbUcxc+TthzvqWIztt+hQoE5xRKDLJGBMQ+9UHdcg2
+fydaYr9++EgUXZneo/no8q+aPmxovI8CgFvUv06dTF8RRbZ8k+zang6Kal+U22q+
+pyYbjlzm+deyMr3XEdt20ysrQyjHHAd1rwWN7qbHObstgoS9ZrVHqssMvnekykO0
+vLi+UqNkX2UQWrtzLB08z70kit8HfMKSvcT+rjOue2WaI6lkqCFqm/Je304utgY4
+l5hsGfNPwws4b6Xfexw4y37IDgLoUOdJIroQHgJehnTg6GW7D2qBR2nvAqoy7x+z
+Y55uesrZAgMBAAECggEATEgiU/YhE0LWthON8poJZh4Vf8lZQA+OXoVZi9iRxU8R
+ANeuYngA8ynP0e1/a3ZCU7DqdDlNuTaE+D+DosPu2Y+xndNAbPtQPv+3L6BvueZY
+qY0LoWe1MbVRkyYbj8Nf4qvPvrHucWVKv+18QwYGUOx+7wqMC8Y0nijri3suwLI9
+MHPGGRqkGAHmeYS0JCBTIGI7g/yFI4cNxHSQZjBimOhnLCqqoQ9MEQr4pWWnn3na
+fIg93WNUSuBpja2BWMBgxZcog4CqGTRy2vT32LR0U5fmWn4vOyvRoJxRQS2IQFum
+twwMYWCtxwm7mHRsXVPLPvh1RVHmzzs+q6LhirBFgQKBgQDWTGFADtLevtdqsrPA
+GrcLwsRXeDGY1tq5Q+HQR6XKVUrGp517gncqDUpKhUML7NfcNQE7eO1xXWESlbL9
+xELfe67uQrbPx/uq6L9+JTUiOXrSESJR2UmVAQcAa7Miy9GUgbB9B+r6hVQqF90f
+LgbSKFoPf6czDtyuhF4GImHfUQKBgQDS4ynutds3g/x3hOUCXsrlowt/bffBr8SW
+9yqdJ5isPuIjsmN1Z438qlYpuvwrd7SMV/sEZUxPdFMnb3HKiBJdxHBo2nRup675
+llawjwLbHvC1crnRcvqRT73lTWMLKQAYeYQEFgeg/IBmX5ETiDtii1FsIxYcQLyp
+6PCX/BihCQKBgDcFt3aWF8h/YZoQthxd/5+ya201/C4NBG3LIyCyNLxFuARXpxS+
+Q9B1RxzpKHTYY/gzV9SoUPbpjfISo7mKec0d2aVtVbj11QVl6zz9Wq4l6gYjxhcT
+3lO2xtBx1rXZdT9XKTSBIvEd6KVCKVFHJRMyryUJlqmCaGEatXWHwG9xAoGBAKex
+wBx0PBfPOqmH4duaqVkl5/Sy63r3XCp37Uj+vabqckTUi8ZGTGAIy29voyqli8q2
+A4OhUac05xLKyf+1aHVryb93R3LeoIMUC2dmsWyxE9QVoLFu7tUyRdzbRtEPD2Zm
+6pWdNv/LCgdeIy0W/bIE+wA0flaFHAE4nGkfLC6RAoGABSnk6O3BGhE2Vhr9jDgt
+aqLxHPd1ek0zjI3s4ohSqK957AtLyHSrx6PZWyWMMh1UuiMO8ziRKHZxNF0CfmAa
+FGCcFVRnsohn3tPhPS8x+wm4/XUjZC/GeC3pj0FelVJWWV3DQjbOySUzoxCQPWcb
+QLMb24MhjOPqIBSl6O+pJ5g=
+-----END PRIVATE KEY-----"
+
+          const publicSSLCert = "-----BEGIN CERTIFICATE-----
+MIIC+DCCAeCgAwIBAgIUE1r0vG7FUdoviVO0e/3Q1NXIoQ0wDQYJKoZIhvcNAQEL
+BQAwIzEhMB8GA1UEAwwYMTItMDYtYmFja2VuZC52ZXJjZWwuYXBwMB4XDTI0MDYx
+MjE3NTkyMloXDTI1MDYxMjE3NTkyMlowIzEhMB8GA1UEAwwYMTItMDYtYmFja2Vu
+ZC52ZXJjZWwuYXBwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsIjQ
+mtbHTjP/P7lz/fBTKw1d0tgwUmDpSJQcG1HMXPk7Yc76liM7bfoUKBOcUSgyyRgT
+EPvVB3XINn8nWmK/fvhIFF2Z3qP56PKvmj5saLyPAoBb1L9OnUxfEUW2fJPs2p4O
+impflNtqvqcmG45c5vnXsjK91xHbdtMrK0MoxxwHda8Fje6mxzm7LYKEvWa1R6rL
+DL53pMpDtLy4vlKjZF9lEFq7cywdPM+9JIrfB3zCkr3E/q4zrntlmiOpZKghapvy
+Xt9OLrYGOJeYbBnzT8MLOG+l33scOMt+yA4C6FDnSSK6EB4CXoZ04Ohluw9qgUdp
+7wKqMu8fs2OebnrK2QIDAQABoyQwIjALBgNVHQ8EBAMCBDAwEwYDVR0lBAwwCgYI
+KwYBBQUHAwEwDQYJKoZIhvcNAQELBQADggEBADMkMj4YTHri6J+M2g3okSsfourd
+y1c1rWvro1YChScx1oXpLyKuCWwMQ/gxZZlGi/StdGt8Jd1w6KXH4m0ZoukK+Cih
+vKfNE2kO/8UuYJa3DO2VHN8Xk0CrsSj47Vl5REAok8nG0pNPVY4qoTx1N0yzKLyu
+hRhIXHDj8HMd6sl2omLGaZsAx25mppBNgCsJTOomf6zZ9ZYl6ogYZZTtl+cujdud
+DnL4UiJDkJwNFduEWkrbkzY9BOI/SeqJ5KKpKP254OCe+EJSL7REknJyQatzy87u
+zht8G79g9qzpdbNU1OmvXi651yyc2dKQ6+U5lZP71+8eji9iWvZwl/jx9wc=
+-----END CERTIFICATE-----"
+
             const httpsServer = https.createServer({key: privateKey, cert: publicSSLCert}, app);
             const HTTPS_PORT = parseInt(process.env.HTTPS_PORT!);
             httpsServer.listen(HTTPS_PORT, () => {
