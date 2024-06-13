@@ -2,7 +2,8 @@
 
 import dotenv from "dotenv";
 dotenv.config() // read ".env"
-
+import express from 'express';
+import cors from 'cors';
 import http from "http";
 import mongoose from 'mongoose';
 import app from "./app";
@@ -10,6 +11,12 @@ import { logger } from "./logger"
 import { readFile } from "fs/promises";
 import https from "https";
 import { startWebSocketConnection } from "./websockets";
+
+const app1 = express();
+app1.use(cors({
+  origin: 'https://localhot:3000' // Replace with your actual URL
+}));
+
 /** 
  * Init setup to connect to MongoDB
  * */ 
