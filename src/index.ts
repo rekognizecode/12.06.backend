@@ -60,9 +60,10 @@ async function setup() {
       }
     }
 
-  app.listen(process.env.SERVER_PORT || 3001, () => {
+  const expressServer = app.listen(process.env.SERVER_PORT || 3001, () => {
     console.log('Server Started PORT ==> ', process.env.SERVER_PORT || 3001);
   });
+  startWebSocketConnection(expressServer);
 };
 
 setup().catch(console.dir);
