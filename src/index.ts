@@ -14,7 +14,7 @@ import { startWebSocketConnection } from "./websockets";
 
 const app1 = express();
 app1.use(cors({
-  origin: 'https://localhot:3000' // Replace with your actual URL
+  origin: '*' // Replace with your actual URL
 }));
 
 
